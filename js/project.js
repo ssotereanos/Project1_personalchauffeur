@@ -6,3 +6,9 @@ clear: 'Clear',
 close: 'Ok',
 closeOnSelect: false // Close upon selecting a date,
 });
+
+ $('.datepicker').pickadate(
+{
+   selectMonths: true,
+   selectYears: -100
+});
