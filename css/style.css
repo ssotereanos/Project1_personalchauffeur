@@ -12,6 +12,16 @@ nav .brand-logo {
   color: #444;
 }
 
+.slogan {
+  font-size:40px;
+
+
+}
+
+.sign-in {
+font-size: 20px;
+}
+
 .about {
   color:white;
 }
@@ -87,3 +97,4 @@ p {
 footer.page-footer {
   margin: 0;
 }
+
