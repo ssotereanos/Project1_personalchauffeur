@@ -1,3 +1,8 @@
+  
+  $(document).ready(function() {
+    $('select').material_select();
+  });
+
   var config = {
     apiKey: "AIzaSyDlJaTqcjD9QIn32QvbABqQ3VbfEo_3Mhw",
     authDomain: "thepersonalchauffeur-77695.firebaseapp.com",
@@ -121,9 +126,52 @@
     $("#logOutLinkId").text("Log Out, "+currentUser.firstName);
     $("#input-firstName").val(currentUser.firstName);
     $("#input-lastName").val(currentUser.lastName);
+    $("#input-street").val(currentUser.street);
+    $("#input-city").val(currentUser.city);
+    $("#input-state").val(currentUser.state);
+    $("#input-zipcode").val(currentUser.zip);
+    $("#input-phone").val(currentUser.phone);
+
+    $("#"+currentUser.state).prop('selected',true)
+
+    //to update material select component per materializecss doc
+    $('#input-state').material_select('destroy');
+    $('#input-state').material_select();
   }
 
  }
+
+ function profileLoadInit() {
+    currentUser = JSON.parse(localStorage.getItem("currentUser"));
+    if (currentUser == null){ //not signed in, go back to home page
+      window.location.replace("home.html");
+    } else {
+      $("#logOutLinkId").text("Log Out, "+currentUser.firstName);
+
+    }
+
+ }
+
+ function updateProfile(){
+  currentUser = JSON.parse(localStorage.getItem("currentUser"));
+
+  var inputFirstName = $("#input-firstName").val();
+  var inputlastName = $("#input-lastName").val();
+  var inputStreet = $("#input-street").val();
+  var inputCity = $("#input-city").val();
+  var inputState = $("#input-state").val();
+  var inputZip = $("#input-zipcode").val();
+  var inputPhone = $("#input-phone").val();
+
+  var newUser = {firstName:inputFirstName, lastName:inputlastName, email:currentUser.email, password:currentUser.password
+                 , street:inputStreet, city:inputCity, state:inputState, zip:inputZip, phone:inputPhone};
+
+  currentUser = newUser;
+  localStorage.setItem("currentUser", JSON.stringify(currentUser));
+  var userName= (currentUser.email).replace(/\./g,"");
+  database.ref("users/"+userName).set(currentUser);
+ }
+
 
  $('.datepicker').pickadate({
 selectMonths: true, // Creates a dropdown to control month
