@@ -55,41 +55,7 @@
 body {
   background-image: url('round.png')
 }
-.card {
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-  max-width: 400px;
-  margin: auto;
-  text-align: center;
-  font-family: arial;
-}
 
-.title {
-  color: grey;
-  font-size: 18px;
-}
-
-button {
-  border: none;
-  outline: 0;
-  display: inline-block;
-  padding: 8px;
-  color: white;
-  background-color: #000;
-  text-align: center;
-  cursor: pointer;
-  width: 100%;
-  font-size: 18px;
-}
-
-a {
-  text-decoration: none;
-  font-size: 22px;
-  color: black;
-}
-
-button:hover, a:hover {
-  opacity: 0.7;
-}
 </style>
 </head>
 <body>
@@ -128,7 +94,7 @@ button:hover, a:hover {
       <table class="centered responsive-table highlight">
         <thead>
           <tr>
-              <th>What is your schedual Monday-Friday?</th>
+              <th>Write in your schedual Monday-Friday!</th>
           </tr>
         </thead>
 
@@ -137,39 +103,39 @@ button:hover, a:hover {
             <td>
 
                 <!-- Dropdown Trigger -->
-  <a class='dropdown-button btn' href='#' data-activates='dropdown1'>Monday</a>
-  <a class='dropdown-button btn' href='#' data-activates='dropdown1'>Tuesday</a>
-  <a class='dropdown-button btn' href='#' data-activates='dropdown1'>Wednesday</a>
-  <a class='dropdown-button btn' href='#' data-activates='dropdown1'>Thursday</a>
+  <div class="button">
+  <a class='dropdown-button btn-large' href='#' data-activates='dropdown1'>Monday</a>
+  <a class='dropdown-button btn-large' href='#' data-activates='dropdown1'>Tuesday</a>
+  <a class='dropdown-button btn-large' href='#' data-activates='dropdown1'> Wednesday</a>
+  <a class='dropdown-button btn-large' href='#' data-activates='dropdown1'>Thursday</a>
 
-  <a class='dropdown-button btn' href='#' data-activates='dropdown1'>Friday</a>
+  <a class='dropdown-button btn-large' href='#' data-activates='dropdown1'>Friday</a>
 
- <a class='dropdown-button btn' href='#' data-activates='dropdown1'>Saturday</a>
-  <a class='dropdown-button btn' href='#' data-activates='dropdown1'>Sunday</a>
+ <a class='dropdown-button btn-large' href='#' data-activates='dropdown1'>Saturday</a>
+  <a class='dropdown-button btn-large' href='#' data-activates='dropdown1'>Sunday</a>
 
 
 
 
   <!-- Dropdown Structure -->
   <ul id='dropdown1' class='dropdown-content'>
-    <li><a href="#!">one</a></li>
-    <li><a href="#!">two</a></li>
-    <li class="divider"></li>
-    <li><a href="#!">three</a></li>
-    <li><a href="#!"><i class="material-icons">view_module</i>four</a></li>
-    <li><a href="#!"><i class="material-icons">cloud</i>five</a></li>
-  </ul>
-        
-  <div class="row">
+    <div class="row">
     <form class="col s12">
       <div class="row">
         <div class="input-field col s12">
           <textarea id="textarea1" class="materialize-textarea"></textarea>
-          <label for="textarea1">Write your scheudal out here!</label>
+          <label for="textarea1">Times/Address</label>
         </div>
       </div>
     </form>
   </div>
+  </ul>
+
+<div class="schedual">
+  <img src="picture.jpg">
+</div>
+
+
 
 
 
@@ -181,7 +147,7 @@ button:hover, a:hover {
         <div class="col l6 s12">
           <h5 class="white-text">The Personal Chauffeur</h5>
           <br>
-          <p class="grey-text text-lighten-4"><br>The Personal Chauffeur is a community-based traffic and navigation app. Join other drivers in your area who are looking to carpool, saving everyone time and gas money on their daily commute.</p>
+          <p class="grey-text text-lighten-4"><p><br>The Personal Chauffeur is a community-based traffic and navigation app. Join other drivers in your area who are looking to carpool, saving everyone time and gas money on their daily commute.</p>
 
 
         </div>
