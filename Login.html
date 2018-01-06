@@ -56,13 +56,13 @@
       <div class="row">
         <div class="input-field col s6">
           <i class="material-icons prefix">email</i>
-          <input id="icon_password" type="tel" class="validate">
-          <label for="icon_telephone">E-mail</label>
+          <input id="input-email" type="tel" class="validate">
+          <label for="input-email">E-mail</label>
         </div>
         <div class="input-field col s6">
           <i class="material-icons prefix">lock</i>
-          <input id="password" type="password" class="validate">
-          <label for="icon_lock">Password</label>
+          <input id="input-password" type="password" class="validate">
+          <label for="input-password">Password</label>
         </div>
       </div>
     </form>
@@ -70,7 +70,7 @@
         
       
       <div class="row center">
-         <a class="waves-effect waves-light btn-large" href="profilepage.html">Login</a>
+         <a class="waves-effect waves-light btn-large" onClick="login();">Login</a>
         </div>
         <br><br>
 
@@ -170,6 +170,9 @@
   <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
   <script src="js/materialize.js"></script>
   <script src="js/init.js"></script>
+    <script src="https://momentjs.com/downloads/moment.js"></script> 
+  <script src="https://www.gstatic.com/firebasejs/3.7.1/firebase.js"></script>
+   <script src="js/project.js"></script>
 
   </body>
 </html>

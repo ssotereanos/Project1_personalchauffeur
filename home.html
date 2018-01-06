@@ -55,31 +55,30 @@
       <div class="row">
         <div class="input-field col s3">
           <i class="material-icons prefix">account_circle</i>
-          <input id="icon_prefix" type="text" class="validate">
-          <label for="icon_prefix">First Name</label>
+          <input id="input-firstName" type="text" class="validate">
+          <label for="input-firstName">First Name</label>
         </div>
        <div class="input-field col s3">
           <i class="material-icons prefix">account_circle</i>
-          <input id="icon_prefix" type="text" class="validate">
-          <label for="icon_prefix">Last Name</label>
+          <input id="input-lastName" type="text" class="validate">
+          <label for="input-lastName">Last Name</label>
         </div>
         <div class="input-field col s3">
           <i class="material-icons prefix">email</i>
-          <input id="icon_telephone" type="tel" class="validate">
-          <label for="icon_telephone">E-mail</label>
+          <input id="input-email" type="tel" class="validate">
+          <label for="input-email">E-mail</label>
         </div>
           <div class="input-field col s3">
           <i class="material-icons prefix">lock</i>
-         <input id="password" type="password" class="validate">
-          <label for="icon_telephone">Password</label>
-        </div>
+         <input id="input-password" type="password" class="validate">
+          <label for="input-password">Password</label>
       </div>
     </form>
   </div>
         
       
       <div class="row center">
-         <a class="waves-effect waves-light btn-large" href="profilepage.html">Sign up!</a>
+         <a class="waves-effect waves-light btn-large" onclick="signUp();">Sign up!</a>
         </div>
         <br><br>
 
@@ -177,6 +176,8 @@
   <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
   <script src="js/materialize.js"></script>
   <script src="js/init.js"></script>
+  <script src="https://momentjs.com/downloads/moment.js"></script> 
+  <script src="https://www.gstatic.com/firebasejs/3.7.1/firebase.js"></script>
    <script src="js/project.js"></script>
 
   </body>
