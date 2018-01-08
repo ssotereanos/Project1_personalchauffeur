@@ -259,6 +259,7 @@ function sendTextMessage(phoneNumberToNotify){
               currentUser = snapshot.val();
               localStorage.setItem("currentUser", JSON.stringify(currentUser));
          });
+  alert("Your changes have been saved.");
 
  }
 

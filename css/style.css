@@ -12,11 +12,17 @@ nav .brand-logo {
   color: #444;
 }
 
+.picture{
+margin-top:60px;
+margin-bottom:60px;
+margin-right:60px;
+margin-left:60px;
+}
+
 .slogan {
   font-size:40px;
-
-
 }
+
 
 .sign-in {
 font-size: 20px;
@@ -30,9 +36,8 @@ font-family:times new roman bold;
 .buttons {
 width:500px;
 
-
-
 }
+
 
 .login {
   color:white;
@@ -79,6 +84,12 @@ p {
     width: 100%;
   }
   
+.button2 {
+  float:right;
+}
+
+
+
  .schedule {
 margin-top: 80px;
 margin-bottom:40px;

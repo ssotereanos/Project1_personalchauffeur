@@ -6,6 +6,10 @@
   <title>The Personal Chauffeur: Connect</title>
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
+  <!-- Tile icon for Win8 -->
+  <meta name="msapplication-TileColor" content="#ee6e73">
+  <meta name="msapplication-navbutton-color" content="#ee6e73">
+
   <!-- CSS  -->
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link href="css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection"/>
@@ -13,9 +17,21 @@
 </head>
 <body>
 
+<!--bit of CSS for Info box-->
+  <html>
+  <head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
 
-  <!--Top Navigation-->
-  <nav class="red-text text-lighten-5" role="navigation">
+  body {
+    background-image: url('round.png')
+
+  }
+</style>
+
+
+<!--Top Navigation-->
+<nav class="red-text text-lighten-5" role="navigation">
     <div class="nav-wrapper container">
       <a id="logo-container" href="home.html" class="brand-logo">The Personal Chauffeur</a>
 
@@ -41,77 +57,131 @@
   </nav>
 
 
-  <!--bit of CSS for Info box-->
-  <html>
-  <head>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<style>
+<br><br><br><br>
+<!--Sign-up-->
 
-  body {
-    background-image: url('round.png')
-
-  }
-  .icon-block{
-    background-image: url('round.png');
-    opacity: 0.7;
-  }
-</style>
-</head>
-
-
-  <!--Background container-->
-  <div id="index-banner" class="parallax-container">
-    <div class="section no-pad-bot">
-      <div class="container">
-        <br><br>
-
-                       <!--Background-->
-
-   <div class="row center">
-        <!--Chat button-->
-         <a class="waves-effect waves-light btn-large" href="chat-connect.html">Start Chatting!</a>
-        </div>
-  <div class="col s12 m10">
-          <div class="icon-block">
-          <h2 class="center orange-text">Connect locally to carpool. Make a new friend, help end traffic, make the world a better place!</h2>
-        </div>
-      </div>  
-        <br><br>
-
-      </div>
-    </div>
-    <div class="parallax"><img src="picture2.jpg" alt="Unsplashed background img 1"></div>
-  </div>
-
-
-  <div class="container">
-    <div class="section">
-
-      <!--   Icon Section   -->
+ <div class="row">
+    <form class="col s12">
       <div class="row">
-        <div class="col s12 m1"></div>
-
-        <div class="col s12 m10">
-          <div class="icon-block">
-            <h2 class="center orange-text text-lighten-2"><i class="large material-icons">people</i></h2>
-            
-              <h5 class="center orange-text text-lighten-3"> Connect with Others...</h5>
-
-            <br>
-            <p class="center light"><br>Make friends by connecting with people near your area! If your car broke down or you find yourself in need of a ride, you can schedule a ride with your community in order to help you get to where you need to be! </p>
+        <div class="input-field col s6">
+          <input placeholder="Placeholder" id="first_name" type="text" class="validate">
+          <label for="first_name">First Name</label>
+        </div>
+        <div class="input-field col s6">
+          <input id="last_name" type="text" class="validate">
+          <label for="last_name">Last Name</label>
+        </div>
+      </div>
+      <div class="row">
+        
+      </div>
+      <div class="row">
+        <div class="input-field col s12">
+          <input id="password" type="password" class="validate">
+          <label for="password">Password</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-field col s12">
+          <input id="email" type="email" class="validate">
+          <label for="email">Email</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col s12">
+          This is an inline input field:
+          <div class="input-field inline">
+            <input id="email" type="email" class="validate">
+            <label for="email" data-error="wrong" data-success="right">Email</label>
           </div>
         </div>
-
-       <div class="col s12 m1"></div>
-        </div>
       </div>
-
-    </div>
+    </form>
   </div>
 
 
-<!--Bottom Text-->
-   <div class="parallax-container valign-wrapper">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--Bottom Quote-->
+<div class="parallax-container valign-wrapper">
     <div class="section no-pad-bot">
       <div class="container">
         <div class="row center">
@@ -121,12 +191,9 @@
         </div>
       </div>
     </div>
-    <div class="parallax"><img src="6.jpg" alt="Unsplashed background img 3"></div>
+
+ <div class="parallax"><img src="6.jpg" alt="Unsplashed background img 3"></div>
   </div>
-
- 
-
-  
 
 
 
