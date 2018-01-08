@@ -1,56 +1,169 @@
 
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title>The Personal Chauffeur</title>
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-  <!-- CSS  -->
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-  <link href="css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection"/>
-  <link href="css/style.css" type="text/css" rel="stylesheet" media="screen,projection"/>
-</head>
-<body>
-  <nav class="red-text text-lighten-5" role="navigation">
-    <div class="nav-wrapper container">
-      <a id="logo-container" href="#" class="brand-logo">The Personal Chauffeur</a>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <title>The Personal Chauffeur</title>
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <!-- CSS  -->
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <link href="css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+        <link href="css/style.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+         
+    </head>
 
-      <ul class="right hide-on-med-and-down">
-      <ul id="dropdown2" class="dropdown-content">
-      <li><a href="#!">one<span class="badge">1</span></a></li>
-      <li><a href="#!">two<span class="new badge">1</span></a></li>
-       <li><a href="#!">three</a></li>
-       </ul>
-  </li>
+    <body onload="menuBarInit();">
+      <nav class="red-text text-lighten-5" role="navigation">
+        <div class="nav-wrapper container">
+          <a id="logo-container" href="#" class="brand-logo">The Personal Chauffeur</a>
 
-   </li>
-        <div class="button2">
-         <a class="waves-effect waves-light btn">I need a ride!</a>
-           </div>
-      <ul class="right hide-on-med-and-down">
-        <li><a class="about" href="schedule.html">Schedule</a></li>
-      </ul>
-       <ul class="right hide-on-med-and-down">
-        <li><a class="Home" href="Connet.html">Connect</a></li>
-      </ul>
-      <ul class="right hide-on-med-and-down">
-        <li><a class="Home" href="">Car-Info</a></li>
-      </ul>
-        <ul class="right hide-on-med-and-down">
-        <li><a class="Home" href="profile.html">My Profile</a></li>
-      </ul>
+           <ul class="right hide-on-med-and-down ">
+            <li ><a class="login" id = "logOutLinkId" onclick="logout();">Log Out </a></li>
+           </ul>
+          <ul class="right hide-on-med-and-down">
+            <li><a class="about" href="schedule.html">Schedule</a></li>
+          </ul>
+           <ul class="right hide-on-med-and-down">
+            <li><a class="Home" href="Connet.html">Connect</a></li>
+          </ul>
+          <ul class="right hide-on-med-and-down">
+            <li><a class="Home" href="">Car-Info</a></li>
+          </ul>
+            <ul class="right hide-on-med-and-down">
+            <li><a class="Home" href="profilepage.html">My Profile</a></li>
+          </ul>
+          <ul id="nav-mobile" class="side-nav">
+            <li><a href="#">Navbar Link</a></li>
+          </ul>
+          <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
+        </div>
+    </nav>
+    <div class="row">
+    <form class="col s12">
+      <div class="row">
+          <fieldset style= "border: none;">
+                <legend><i class="material-icons prefix">today</i> Day of The Week </legend>
+                <div class="input-field col s6">
+                          <i class="material-icons prefix"></i>
+                          <select id="input-day">
+                            <option value="" disabled selected>Day of the Week</option>
+                            <option value="Weekdays" id="Weekdays">Weekdays (Mon - Friday)</option>
+                            <option value="Monday" id="Monday">Monday</option>
+                            <option value="Tuesday" id="Tuesday">Tuesday</option>
+                            <option value="Wednesday" id="Wednesday">Wednesday</option>
+                            <option value="Thursday" id="Thursday">Thursday</option>
+                            <option value="Friday" id="Friday">Friday</option>
+                            <option value="Saturday" id="Saturday">Saturday</option>
+                            <option value="Sunday" id="Sunday">Sunday</option>
+                          </select>
+                </div>
+            </fieldset>
+      </div>
+      <div class="row">
+              <fieldset style= "border: none;">
+                        <legend><i class="material-icons prefix">home</i> From Address </legend>
+                            <div class="input-field col s4">
+                              <i class="material-icons prefix"></i>
+                              <label for="input-fromstreet">Street</label>
+                              <input placeholder="Street" id="input-fromstreet" type="text" class="validate">
+                            </div>
+                            <div class="input-field col s2">
+                              <i class="material-icons prefix"></i>
+                              <label for="input-fromzip">ZipCode</label>
+                              <input placeholder="ZipCode" id="input-fromzip" type="text" class="validate">
+                            </div>
+              </fieldset>
 
-      <ul id="nav-mobile" class="side-nav">
-        <li><a href="#">Navbar Link</a></li>
-      </ul>
-  </nav>
+              <fieldset style= "border: none;">
+                        <legend><i class="material-icons prefix">home</i> To Address </legend>
+                            <div class="input-field col s4">
+                              <i class="material-icons prefix"></i>
+                              <label for="input-tostreet">Street</label>
+                              <input placeholder="Street" id="input-tostreet" type="text" class="validate">
+                            </div>
+                            <div class="input-field col s2">
+                              <i class="material-icons prefix"></i>
+                              <label for="input-tozip">ZipCode</label>
+                              <input placeholder="ZipCode" id="input-tozip" type="text" class="validate">
+                            </div>
+              </fieldset>
+
+              <fieldset style= "border: none;">
+                        <legend><i class="material-icons prefix">watch_later</i> Arrival Time </legend>
+                            <div class="input-field col s2">
+                              <i class="material-icons prefix"></i>
+                              <select id="input-hour">
+                                <option value="" disabled selected>0</option>
+                                <option value="1" id="1">1</option>
+                                <option value="2" id="2">2</option>
+                                <option value="3" id="3">3</option>
+                                <option value="4" id="4">4</option>
+                                <option value="5" id="5">5</option>
+                                <option value="6" id="6">6</option>
+                                <option value="7" id="7">7</option>
+                                <option value="8" id="8">8</option>
+                                <option value="9" id="9">9</option>
+                                <option value="10" id="10">10</option>
+                                <option value="11" id="11">11</option>
+                                <option value="12" id="12">12</option>
+                              </select>
+                              <label for="input-hour">Hour</label>
+                            </div>
+
+                            <div class="input-field col s2">
+                              <i class="material-icons prefix"></i>
+                              <select id="input-minute">
+                                <option value="" disabled selected>0</option>
+                                <option value="0" id="0">00</option>
+                                <option value="5" id="5">05</option>
+                                <option value="10" id="10">10</option>
+                                <option value="15" id="15">15</option>
+                                <option value="20" id="20">20</option>
+                                <option value="25" id="25">25</option>
+                                <option value="30" id="30">30</option>
+                                <option value="35" id="35">35</option>
+                                <option value="40" id="40">40</option>
+                                <option value="45" id="45">45</option>
+                                <option value="50" id="50">50</option>
+                                <option value="55" id="55">55</option>
+                              </select>
+                              <label for="input-minute">Minute</label>
+                            </div>
+
+                            <div class="input-field col s2">
+                              <i class="material-icons prefix"></i>
+                              <select id="input-ampm">
+                                <option value="" disabled selected></option>
+                                <option value="AM" id="AM">AM</option>
+                                <option value="PM" id="PM">PM</option>
+                              </select>
+                              <label for="input-ampm">AM/PM</label>
+                            </div>
+                           
+              </fieldset>
+              <fieldset style= "border: none;">
+                        <legend><i class="material-icons prefix">phone_forwarded</i> Person to Notify </legend>
+                            <div class="input-field col s4">
+                              <i class="material-icons prefix"></i>
+                              <label for="input-notificationNumber">Phone Number To Text if You Are Late/Absent (optional)</label>
+                              <input placeholder="PhoneNumber" id="input-notificationNumber" type="text" class="validate">
+                            </div>
+                             <div class="input-field col s3">
+                              <i class="material-icons prefix"></i>
+                              <label for="input-notificationName">Name of the Person To Text (optional)</label>
+                              <input placeholder="Name" id="input-notificationName" type="text" class="validate">
+                            </div>
+              </fieldset>
+      </div>
+    </form>
+      <div class="row center">
+         <a class="waves-effect waves-light btn-large" onClick="saveSchedule();">Save</a>
+      </div>
+    </div>
 
 
-
-<html>
-<head>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <style>
 
 
@@ -59,283 +172,12 @@ body {
 }
 
 </style>
-</head>
-<body>
-
-<table class="centered responsive-table highlight">
-        <thead>
-          <tr>
-              <th>Your Daily Schedule!</th>
-          </tr>
-        </thead>
-
-        <tbody>
-          <tr>
-            <td>
-
-   <a class="waves-effect waves-light btn-large">Monday</a>
-
-  <div class="row">
-    <form class="col s12">
-      <div class="row">
-        <div class="input-field col s4">
-          <textarea id="textarea1" class="materialize-textarea center"></textarea>
-          <label for="textarea1">From:</label>
-        </div>
-        <div class="input-field col s4">
-          <textarea id="textarea1" class="materialize-textarea"></textarea>
-          <label for="textarea1">To:</label>
-        </div>
-        <div class="input-field col s4">
-          <textarea id="textarea1" class="materialize-textarea"></textarea>
-          <label for="textarea1">Arrival Time:</label>
-        </div>
-      </div>
-         <div class="row">
-        <div class="input-field col s4">
-          <textarea id="textarea1" class="materialize-textarea center"></textarea>
-          <label for="textarea1">From:</label>
-        </div>
-        <div class="input-field col s4">
-          <textarea id="textarea1" class="materialize-textarea"></textarea>
-          <label for="textarea1">To:</label>
-        </div>
-        <div class="input-field col s4">
-          <textarea id="textarea1" class="materialize-textarea"></textarea>
-          <label for="textarea1">Arrival Time:</label>
-        </div>
-      </div>
-    </form>
-  </div>
-
-     <a class="waves-effect waves-light btn-large">Tuesday</a>
-
-  <div class="row">
-    <form class="col s12">
-      <div class="row">
-        <div class="input-field col s4">
-          <textarea id="textarea1" class="materialize-textarea center"></textarea>
-          <label for="textarea1">From:</label>
-        </div>
-        <div class="input-field col s4">
-          <textarea id="textarea1" class="materialize-textarea"></textarea>
-          <label for="textarea1">To:</label>
-        </div>
-        <div class="input-field col s4">
-          <textarea id="textarea1" class="materialize-textarea"></textarea>
-          <label for="textarea1">Arrival Time:</label>
-        </div>
-      </div>
-         <div class="row">
-        <div class="input-field col s4">
-          <textarea id="textarea1" class="materialize-textarea center"></textarea>
-          <label for="textarea1">From:</label>
-        </div>
-        <div class="input-field col s4">
-          <textarea id="textarea1" class="materialize-textarea"></textarea>
-          <label for="textarea1">To:</label>
-        </div>
-        <div class="input-field col s4">
-          <textarea id="textarea1" class="materialize-textarea"></textarea>
-          <label for="textarea1">Arrival Time:</label>
-        </div>
-      </div>
-    </form>
-  </div>
-
-     <a class="waves-effect waves-light btn-large">Wednesday</a>
-
-  <div class="row">
-    <form class="col s12">
-      <div class="row">
-        <div class="input-field col s4">
-          <textarea id="textarea1" class="materialize-textarea center"></textarea>
-          <label for="textarea1">From:</label>
-        </div>
-        <div class="input-field col s4">
-          <textarea id="textarea1" class="materialize-textarea"></textarea>
-          <label for="textarea1">To:</label>
-        </div>
-        <div class="input-field col s4">
-          <textarea id="textarea1" class="materialize-textarea"></textarea>
-          <label for="textarea1">Arrival Time:</label>
-        </div>
-      </div>
-          <div class="row">
-        <div class="input-field col s4">
-          <textarea id="textarea1" class="materialize-textarea center"></textarea>
-          <label for="textarea1">From:</label>
-        </div>
-        <div class="input-field col s4">
-          <textarea id="textarea1" class="materialize-textarea"></textarea>
-          <label for="textarea1">To:</label>
-        </div>
-        <div class="input-field col s4">
-          <textarea id="textarea1" class="materialize-textarea"></textarea>
-          <label for="textarea1">Arrival Time:</label>
-        </div>
-      </div>
-    </form>
-  </div>
-
-     <a class="waves-effect waves-light btn-large">Thursday</a>
-
-  <div class="row">
-    <form class="col s12">
-      <div class="row">
-        <div class="input-field col s4">
-          <textarea id="textarea1" class="materialize-textarea center"></textarea>
-          <label for="textarea1">From:</label>
-        </div>
-        <div class="input-field col s4">
-          <textarea id="textarea1" class="materialize-textarea"></textarea>
-          <label for="textarea1">To:</label>
-        </div>
-        <div class="input-field col s4">
-          <textarea id="textarea1" class="materialize-textarea"></textarea>
-          <label for="textarea1">Arrival Time:</label>
-        </div>
-      </div>
-       <div class="row">
-        <div class="input-field col s4">
-          <textarea id="textarea1" class="materialize-textarea center"></textarea>
-          <label for="textarea1">From:</label>
-        </div>
-        <div class="input-field col s4">
-          <textarea id="textarea1" class="materialize-textarea"></textarea>
-          <label for="textarea1">To:</label>
-        </div>
-        <div class="input-field col s4">
-          <textarea id="textarea1" class="materialize-textarea"></textarea>
-          <label for="textarea1">Arrival Time:</label>
-        </div>
-      </div>
-    </form>
-  </div>
-
-     <a class="waves-effect waves-light btn-large">Friday</a>
-
-  <div class="row">
-    <form class="col s12">
-      <div class="row">
-        <div class="input-field col s4">
-          <textarea id="textarea1" class="materialize-textarea center"></textarea>
-          <label for="textarea1">From:</label>
-        </div>
-        <div class="input-field col s4">
-          <textarea id="textarea1" class="materialize-textarea"></textarea>
-          <label for="textarea1">To:</label>
-        </div>
-        <div class="input-field col s4">
-          <textarea id="textarea1" class="materialize-textarea"></textarea>
-          <label for="textarea1">Arrival Time:</label>
-        </div>
-      </div>
-         <div class="row">
-        <div class="input-field col s4">
-          <textarea id="textarea1" class="materialize-textarea center"></textarea>
-          <label for="textarea1">From:</label>
-        </div>
-        <div class="input-field col s4">
-          <textarea id="textarea1" class="materialize-textarea"></textarea>
-          <label for="textarea1">To:</label>
-        </div>
-        <div class="input-field col s4">
-          <textarea id="textarea1" class="materialize-textarea"></textarea>
-          <label for="textarea1">Arrival Time:</label>
-        </div>
-      </div>
-    </form>
-  </div>
-
-     <a class="waves-effect waves-light btn-large">Saturday</a>
-
-  <div class="row">
-    <form class="col s12">
-      <div class="row">
-        <div class="input-field col s4">
-          <textarea id="textarea1" class="materialize-textarea center"></textarea>
-          <label for="textarea1">From:</label>
-        </div>
-        <div class="input-field col s4">
-          <textarea id="textarea1" class="materialize-textarea"></textarea>
-          <label for="textarea1">To:</label>
-        </div>
-        <div class="input-field col s4">
-          <textarea id="textarea1" class="materialize-textarea"></textarea>
-          <label for="textarea1">Arrival Time:</label>
-        </div>
-      </div>
-          <div class="row">
-        <div class="input-field col s4">
-          <textarea id="textarea1" class="materialize-textarea center"></textarea>
-          <label for="textarea1">From:</label>
-        </div>
-        <div class="input-field col s4">
-          <textarea id="textarea1" class="materialize-textarea"></textarea>
-          <label for="textarea1">To:</label>
-        </div>
-        <div class="input-field col s4">
-          <textarea id="textarea1" class="materialize-textarea"></textarea>
-          <label for="textarea1">Arrival Time:</label>
-        </div>
-      </div>
-    </form>
-  </div>
-
-     <a class="waves-effect waves-light btn-large">Sunday</a>
-
-  <div class="row">
-    <form class="col s12">
-      <div class="row">
-        <div class="input-field col s4">
-          <textarea id="textarea1" class="materialize-textarea center"></textarea>
-          <label for="textarea1">From:</label>
-        </div>
-        <div class="input-field col s4">
-          <textarea id="textarea1" class="materialize-textarea"></textarea>
-          <label for="textarea1">To:</label>
-        </div>
-        <div class="input-field col s4">
-          <textarea id="textarea1" class="materialize-textarea"></textarea>
-          <label for="textarea1">Arrival Time:</label>
-        </div>
-      </div>
-        <div class="row">
-        <div class="input-field col s4">
-          <textarea id="textarea1" class="materialize-textarea center"></textarea>
-          <label for="textarea1">From:</label>
-        </div>
-        <div class="input-field col s4">
-          <textarea id="textarea1" class="materialize-textarea"></textarea>
-          <label for="textarea1">To:</label>
-        </div>
-        <div class="input-field col s4">
-          <textarea id="textarea1" class="materialize-textarea"></textarea>
-          <label for="textarea1">Arrival Time:</label>
-        </div>
-      </div>
-    </form>
-  </div>
-
-
-        
 
 
 
-  <!-- Dropdown Structure -->
-  <ul id='dropdown1' class='dropdown-content'>
-    <div class="row">
-    <form class="col s12">
-      <div class="row">
-        <div class="input-field col s12">
-          <textarea id="textarea1" class="materialize-textarea"></textarea>
-          <label for="textarea1">Times/Address</label>
-        </div>
-      </div>
-    </form>
-  </div>
-  </ul>
+  
+
+     
 
 
 
@@ -376,12 +218,13 @@ body {
       </div>
     </div>
   </footer>
-</body>
 
   <!--  Scripts-->
   <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
   <script src="js/materialize.js"></script>
   <script src="js/init.js"></script>
-   <script src="js/project.js"></script>
+  <script src="https://momentjs.com/downloads/moment.js"></script> 
+  <script src="https://www.gstatic.com/firebasejs/3.7.1/firebase.js"></script>
+  <script src="js/project.js"></script>
 
   </body>

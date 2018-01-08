@@ -1,8 +1,3 @@
-  
-  $(document).ready(function() {
-    $('select').material_select();
-  });
-
   var config = {
     apiKey: "AIzaSyDlJaTqcjD9QIn32QvbABqQ3VbfEo_3Mhw",
     authDomain: "thepersonalchauffeur-77695.firebaseapp.com",
@@ -16,68 +11,129 @@
   var database = firebase.database();
   var currentUser = null;
 
-  function scheduleAlerts(){
-  //call mapquest with a particular place and destination
-  
-  //use 24hr clock for time
-  var timeINeedToBeThere = "12-21-2017 20:26:00"; //TODO this will come from the database
 
-  var convertedArriveTime = moment(timeINeedToBeThere, "MM-DD-YYYY hh:mm:ss");
-  var estimatedDriveTime = "";
-  var minutesToLeave = "";
-  var timeToLeave = "";
+//this code is needed by Materialize to instantiate the drop down menu
+  $(document).ready(function() {
+    $('select').material_select();
+  });
 
-  var toAddress = "1901 Kelly Blvd, Carrollton, TX 75006";
-  var fromAddress = "2555 Esters Rd, Irving, TX 75062";
-  var key = "QhcHIGXiz9pts1kgG9Xax98JAk1V0UGh";
-  var queryURL = "http://www.mapquestapi.com/directions/v2/route?key="+key+"&from="+fromAddress+"&to="+toAddress;
-  var timeFromNowToArrival = "";
-
-  //calling api using the url above
+function sendTextMessage(phoneNumberToNotify){
+  currentUser = JSON.parse(localStorage.getItem("currentUser"));
+  var queryURL =  "http://app.eztexting.com/sending/messages?format=json";
+  var message = "This is "+currentUser.firstName+"'s Personal Chauffeur. "+currentUser.firstName+" will be late today.";
   $.ajax({
     url: queryURL,
-    method: "GET"
-  })
-
-  //function to run once the api call is completed
-  .done(function(response) {
+    method: "POST",
+    data: {User:"PCProject201", Password:"PCProject201", PhoneNumbers:phoneNumberToNotify, Message:message}
+  }).fail(function(response){
+    console.log("failed");
     console.log(response);
-    estimatedDriveTime = response.route.time; //drive time in seconds
-    
-    timeToLeave = convertedArriveTime.subtract(estimatedDriveTime, "seconds");
-
-    console.log("timeToLeave: " + moment(timeToLeave).format("hh:mm:ss"));
-
-  
-    //Find out when I need to leave
-    //I need to leave today at 7.30
-    var now = moment();
-    var whenINeedToLeave = timeToLeave.diff(now);
-    if(whenINeedToLeave<0){
-      alert("Jetson, you're late!");
-    } else {
-      alert("you still have some time");
-    }
-    console.log("whenINeedToLeave: "+whenINeedToLeave);
-
-    console.log("estimatedDriveTime " + estimatedDriveTime);
-    console.log("convertedArriveTime "+convertedArriveTime);
-   
   });
-} //close function scheduleAlerts
+}
+
+  function isWeekDay(day){
+    var weekDays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
+    return weekDays.includes(day);
+  }
+  
+  function getSchedule(today, theSchedule, isWeekDay){
+    var filteredSchedule = [];
+    for(key in theSchedule){
+      console.log(theSchedule[key]);
+      var theDay = theSchedule[key].day;
+      if(theDay == today){
+        filteredSchedule.push(theSchedule[key]);
+      } else if(theDay == "Weekdays" && isWeekDay){
+        filteredSchedule.push(theSchedule[key]);
+      }
+    }
+    return filteredSchedule;
+  }
+
+  function scheduleAlerts(){
+    checkForAlerts();
+    setInterval(checkForAlerts, 600000);
+  }
+
+  function checkForAlerts(){
+    currentUser = localStorage.getItem("currentUser");
+    if(currentUser!=null){
+        currentUser = JSON.parse(currentUser);
+        var theSchedule = currentUser.schedule;
+        var todaysSchedule;
+
+        var now = moment();
+        var today = now.format("dddd");
+        
+        if(isWeekDay(today)){
+          todaysSchedule = getSchedule(today, theSchedule, true);
+        } else {
+          todaysSchedule = getSchedule(today, theSchedule, false);
+        }
+
+        if(todaysSchedule.length > 0 ){ // there is something on the schedule for today!
+            var upcomingTrip = todaysSchedule[0];
+            console.log(upcomingTrip);
+            var timeINeedToBeThere = moment();
+            timeINeedToBeThere.set('hour', upcomingTrip.hour);
+            timeINeedToBeThere.set('minute', upcomingTrip.minute);
+            timeINeedToBeThere.set('second', 00);
+  
+            var convertedArriveTime = moment(timeINeedToBeThere, "MM-DD-YYYY hh:mm:ss");
+            var estimatedDriveTime = "";
+            var minutesToLeave = "";
+            var timeToLeave = "";
+
+            var toAddress = upcomingTrip.to;
+            toAddress = $.trim(toAddress);
+            var fromAddress = upcomingTrip.from;
+            fromAddress = $.trim(fromAddress);
+          
+            var key = "QhcHIGXiz9pts1kgG9Xax98JAk1V0UGh";
+            var queryURL = "https://www.mapquestapi.com/directions/v2/route?key="+key+"&to="+toAddress+"&from="+fromAddress;
+
+            var timeFromNowToArrival = "";
+
+            //calling api using the url above
+           $.ajax({
+              url: queryURL,
+              method: "GET"
+            }) .done(function(response) {
+                  estimatedDriveTime = response.route.time; //drive time in seconds
+                  
+                  timeToLeave = convertedArriveTime.subtract(estimatedDriveTime, "seconds");
+                  var now = moment();
+                  var whenINeedToLeave = timeToLeave.diff(now);
+                  if(whenINeedToLeave<0){
+                    var phoneNumberToNotify = upcomingTrip.notifyPhone;
+                    if(phoneNumberToNotify!=null && phoneNumberToNotify!=""){
+                      var notify = confirm("Text "+upcomingTrip.notifyName+ " that you'll be late?");
+                      if(notify){
+                        sendTextMessage(phoneNumberToNotify);
+                      }
+                    }
+                    
+                  } else {
+                    alert("You have to leave at "+moment(timeToLeave).format("hh:mm") +" to get to your destination on time.");
+                  }
+                 
+                });
+       } // close if statement
+    }//close if statement
+  } //close function checkForAlerts
 
  function login(){
   var email = $("#input-email").val().toLowerCase();
   var password= $("#input-password").val();
-  var userName= email.replace(/\./g,"");
+  var userName= getUserName(email);
   var pulledUser = null;
   firebase.database().ref("users/"+userName).once("value").then(
           function(snapshot) {
             pulledUser = snapshot.val();
              if(pulledUser!=null && password == pulledUser.password) {
-              currentUser = pulledUser;
-              localStorage.setItem("currentUser", JSON.stringify(currentUser));
+              localStorage.setItem("currentUser", JSON.stringify(pulledUser));
               window.location.replace("profilepage.html");
+              
             } else {
               alert("Unable to login. Please check your email and password");
             } 
@@ -96,7 +152,7 @@
  	var lastName =  $("#input-lastName").val();
  	var email = $("#input-email").val().toLowerCase();
  	var password= $("#input-password").val();
- 	var userName= email.replace(/\./g,"");
+ 	var userName= getUserName(email);
   //get the list of userNames from the DB
  	user = {firstName:firstName, lastName:lastName, email:email, password:password};
   firebase.database().ref("userNames/"+userName).once("value").then(
@@ -114,9 +170,6 @@
           });
  }
 
- function completeSignUp(){
-
- }
 
  function profileInfoInitialLoad(){
   currentUser = JSON.parse(localStorage.getItem("currentUser"));
@@ -141,16 +194,15 @@
 
  }
 
- function profileLoadInit() {
+ function menuBarInit(){
     currentUser = JSON.parse(localStorage.getItem("currentUser"));
     if (currentUser == null){ //not signed in, go back to home page
       window.location.replace("home.html");
     } else {
       $("#logOutLinkId").text("Log Out, "+currentUser.firstName);
-
     }
-
  }
+
 
  function updateProfile(){
   currentUser = JSON.parse(localStorage.getItem("currentUser"));
@@ -170,6 +222,49 @@
   localStorage.setItem("currentUser", JSON.stringify(currentUser));
   var userName= (currentUser.email).replace(/\./g,"");
   database.ref("users/"+userName).set(currentUser);
+ }
+
+ function saveSchedule(){
+  currentUser = JSON.parse(localStorage.getItem("currentUser"));
+  var inputDay = $("#input-day").val();
+  var inputFromStreet = $("#input-fromstreet").val();
+  var inputFromZip = $("#input-fromzip").val();
+  var inputToStreet = $("#input-tostreet").val();
+  var inputToZip = $("#input-tozip").val();
+  var inputHour = $("#input-hour").val();
+  var inputMin = $("#input-minute").val();
+  var inputAmpm = $("#input-ampm").val();
+  var notifyPhone = $("#input-notificationNumber").val();
+  var notifyName = $("#input-notificationName").val();
+
+  if(inputAmpm == "PM"){
+    if(inputHour!=12){
+      inputHour = Number(inputHour) + 12;
+    }
+  } else { //if AM
+    if(inputHour == 12){ // if 12AM
+      inputHour = 0;
+    }
+
+  }
+
+  var scheduleEntry = { day: inputDay, from:inputFromStreet+","+inputFromZip, 
+                        to:inputToStreet+","+inputToZip, 
+                        hour:inputHour, minute:inputMin, notifyPhone:notifyPhone, notifyName: notifyName};
+ 
+
+  database.ref("users/"+getUserName(currentUser.email)+"/schedule").push(scheduleEntry);
+  firebase.database().ref("users/"+getUserName(currentUser.email)).once("value").then(
+          function(snapshot) {
+              currentUser = snapshot.val();
+              localStorage.setItem("currentUser", JSON.stringify(currentUser));
+         });
+  alert("Your changes have been saved.");
+
+ }
+
+ function getUserName(email){
+    return email.replace(/\./g,"");
  }
 
 
