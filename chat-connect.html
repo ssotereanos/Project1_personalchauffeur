@@ -66,27 +66,18 @@
 <!-- Message Area-->
 <br><br><br><br><br><br><br><br><br>
 
+<div class="row">
+    <form class="col s12 m10">
+      <div class="row">
+        <div class="input-field col s12">
+          <i class="material-icons prefix">mode_edit</i>
+          <textarea id="icon_prefix2" class="materialize-textarea"></textarea>
+          <label for="icon_prefix2">Message</label>
+        </div>
+      </div>
+    </form>
+  </div>
 
-<main class="parallax-container">
-  <div class="section no-pad-bot">
-    <div class="container">
-    <div id="messages-card-container" class="mdl-cell mdl-cell--12-col mdl-grid">
-
-      <!-- Messages container -->
-  <div id="messages-card" class="mdl-card mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-cell--6-col-tablet mdl-cell--6-col-desktop">
-        <div class="mdl-card__supporting-text mdl-color-text--grey-600">
-          <div id="messages">
-            <span id="message-filler"></span>
-          </div>
-
-      <form type="text" id="message-form" action="#">
-        <div id="message-form" class="form-control" rows="7"></div>
-        <br>
-
-            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-              <input class="mdl-textfield__input" type="text" id="message">
-              <label class="mdl-textfield__label" for="message">Message...</label>
-            </div>
             <button id="submit" disabled type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">
               Send
             </button>
