@@ -47,7 +47,18 @@ function sendTextMessage(phoneNumberToNotify){
         filteredSchedule.push(theSchedule[key]);
       }
     }
+    console.log(filteredSchedule);
+    if(filteredSchedule.length>1) {filteredSchedule.sort(compareFunction)};
+    console.log(filteredSchedule);
     return filteredSchedule;
+  }
+
+  function compareFunction(a, b){
+    if(a.hour!=b.hour){
+      return a.hour - b.hour;
+    } else {
+      return a.minute - b.minute;
+    }
   }
 
   function scheduleAlerts(){
