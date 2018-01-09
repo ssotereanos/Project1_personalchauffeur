@@ -94,7 +94,7 @@ function sendTextMessage(phoneNumberToNotify){
 
               minutesToDeparture = timeINeedToBeThere.diff(moment(), 'minutes');
               upcomingTrip = null; //reset here and do the check below
-              if(minutesToDeparture>=-15){ //find the first trip I'm not more than 15 mins late for
+              if(minutesToDeparture >= -15){ //find the first trip I'm not more than 15 mins late for
                 upcomingTrip = todaysSchedule[i];
                 break;
               }
@@ -291,6 +291,48 @@ function sendTextMessage(phoneNumberToNotify){
  function getUserName(email){
     return email.replace(/\./g,"");
  }
+
+
+
+ /* ***********************CHAT FUNCTIONALITY **************************** */
+   database.ref("chat").orderByChild("timeStamp").limitToLast(1).on("child_added", function(snapshot) {
+      var chatMessagesString = "";
+      var timeStamp = moment(snapshot.val().timeStamp).format("hh:mm:ss");
+      chatMessagesString += snapshot.val().name+"["+timeStamp+" ]: "+snapshot.val().message;
+      chatMessagesString += "<br>";
+      $("#chatbox").append(chatMessagesString);
+      $("#chatbox").scrollTop($("#chatbox")[0].scrollHeight); //scrolls as messages as added
+
+  });
+
+ $("#submitChat").click(function(event){
+    var currentUser = JSON.parse(localStorage.getItem("currentUser"));
+    event.preventDefault();
+    var message = $("#input-message").val();
+    if(isNullOrEmpty(message)){
+        alert("Please enter a message");
+    } else {
+        $("#input-message").val(""); // empty out the textbox
+        var chatMessage = {name: currentUser.firstName, message:message, timeStamp:firebase.database.ServerValue.TIMESTAMP}
+        database.ref("chat").push(chatMessage);
+    }
+  });
+
+
+  function isNullOrEmpty(input){
+    if(input == null){
+      return true;
+    } 
+
+    if((typeof input) == "string" && input.trim()==""){
+      return true;
+    }
+
+    return false;
+    
+  }
+
+
 
 
  $('.datepicker').pickadate({
