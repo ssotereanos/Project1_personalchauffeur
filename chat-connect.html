@@ -65,9 +65,10 @@
 
 <!-- Message Area-->
 <br><br><br><br><br><br><br><br><br>
-
+      <!--Text Area-->
+<div class="container">
 <div class="row">
-    <form class="col s12 m10">
+    <form class="col s12">
       <div class="row">
         <div class="input-field col s12">
           <i class="material-icons prefix">mode_edit</i>
@@ -78,15 +79,27 @@
     </form>
   </div>
 
-            <button id="submit" disabled type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">
-              Send
-            </button>
-          </form>
+  <!--Upload Files-->
+
+  <form action="#">
+    <div class="file-field input-field">
+      <div class="btn">
+        <span>File</span>
+        <input type="file" multiple>
+      </div>
+      <div class="file-path-wrapper">
+        <input class="file-path validate" type="text" placeholder="Upload one or more files">
+      </div>
+    </div>
+  </form>
+
+  <!--Send Button-->
+
+  <button class="btn waves-effect waves-light" type="submit" name="action">Submit
+   </form>
           <form id="image-form" action="#">
             <input id="mediaCapture" type="file" accept="image/*,capture=camera">
-            <button id="submitImage" title="Add an image" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-color--amber-400 mdl-color-text--white">
-              <i class="material-icons">image</i>
-            </button>
+            
           </form>
         </div>
       </div>
@@ -157,6 +170,7 @@
   <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
   <script src="js/materialize.js"></script>
   <script src="js/init.js"></script>
+  <script src="js/chat-connect.js"></script>
 
   </body>
 </html>
