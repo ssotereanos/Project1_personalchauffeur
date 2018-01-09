@@ -298,7 +298,7 @@ function sendTextMessage(phoneNumberToNotify){
    database.ref("chat").orderByChild("timeStamp").limitToLast(1).on("child_added", function(snapshot) {
       var chatMessagesString = "";
       var timeStamp = moment(snapshot.val().timeStamp).format("hh:mm:ss");
-      chatMessagesString += snapshot.val().name+"["+timeStamp+" ]: "+snapshot.val().message;
+      chatMessagesString += snapshot.val().name+" ["+timeStamp+"]:  "+snapshot.val().message;
       chatMessagesString += "<br>";
       $("#chatbox").append(chatMessagesString);
       $("#chatbox").scrollTop($("#chatbox")[0].scrollHeight); //scrolls as messages as added
