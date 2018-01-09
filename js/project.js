@@ -39,7 +39,7 @@ function sendTextMessage(phoneNumberToNotify){
   function getSchedule(today, theSchedule, isWeekDay){
     var filteredSchedule = [];
     for(key in theSchedule){
-      console.log(theSchedule[key]);
+      theSchedule[key].key = key; //keep the key that is in the DB, just in case needed for future iterations
       var theDay = theSchedule[key].day;
       if(theDay == today){
         filteredSchedule.push(theSchedule[key]);
@@ -47,9 +47,7 @@ function sendTextMessage(phoneNumberToNotify){
         filteredSchedule.push(theSchedule[key]);
       }
     }
-    console.log(filteredSchedule);
     if(filteredSchedule.length>1) {filteredSchedule.sort(compareFunction)};
-    console.log(filteredSchedule);
     return filteredSchedule;
   }
 
@@ -63,7 +61,7 @@ function sendTextMessage(phoneNumberToNotify){
 
   function scheduleAlerts(){
     checkForAlerts();
-    setInterval(checkForAlerts, 600000);
+    setInterval(checkForAlerts, 600000); //every 10 minutes
   }
 
   function checkForAlerts(){
@@ -83,52 +81,68 @@ function sendTextMessage(phoneNumberToNotify){
         }
 
         if(todaysSchedule.length > 0 ){ // there is something on the schedule for today!
-            var upcomingTrip = todaysSchedule[0];
-            console.log(upcomingTrip);
-            var timeINeedToBeThere = moment();
-            timeINeedToBeThere.set('hour', upcomingTrip.hour);
-            timeINeedToBeThere.set('minute', upcomingTrip.minute);
-            timeINeedToBeThere.set('second', 00);
-  
-            var convertedArriveTime = moment(timeINeedToBeThere, "MM-DD-YYYY hh:mm:ss");
-            var estimatedDriveTime = "";
-            var minutesToLeave = "";
-            var timeToLeave = "";
+            var upcomingTrip = null;
+            var timeINeedToBeThere = "";
+            var minutesToDeparture = 0;
 
-            var toAddress = upcomingTrip.to;
-            toAddress = $.trim(toAddress);
-            var fromAddress = upcomingTrip.from;
-            fromAddress = $.trim(fromAddress);
-          
-            var key = "QhcHIGXiz9pts1kgG9Xax98JAk1V0UGh";
-            var queryURL = "https://www.mapquestapi.com/directions/v2/route?key="+key+"&to="+toAddress+"&from="+fromAddress;
+            for(i=0; i<todaysSchedule.length; i++){
+              upcomingTrip = todaysSchedule[i];
+              var timeINeedToBeThere = moment();
+              timeINeedToBeThere.set('hour', upcomingTrip.hour);
+              timeINeedToBeThere.set('minute', upcomingTrip.minute);
+              timeINeedToBeThere.set('second', 00);
 
-            var timeFromNowToArrival = "";
+              minutesToDeparture = timeINeedToBeThere.diff(moment(), 'minutes');
+              upcomingTrip = null; //reset here and do the check below
+              if(minutesToDeparture>=-15){ //find the first trip I'm not more than 15 mins late for
+                upcomingTrip = todaysSchedule[i];
+                break;
+              }
+            }
 
-            //calling api using the url above
-           $.ajax({
-              url: queryURL,
-              method: "GET"
-            }) .done(function(response) {
-                  estimatedDriveTime = response.route.time; //drive time in seconds
-                  
-                  timeToLeave = convertedArriveTime.subtract(estimatedDriveTime, "seconds");
-                  var now = moment();
-                  var whenINeedToLeave = timeToLeave.diff(now);
-                  if(whenINeedToLeave<0){
-                    var phoneNumberToNotify = upcomingTrip.notifyPhone;
-                    if(phoneNumberToNotify!=null && phoneNumberToNotify!=""){
-                      var notify = confirm("Text "+upcomingTrip.notifyName+ " that you'll be late?");
-                      if(notify){
-                        sendTextMessage(phoneNumberToNotify);
+            if(upcomingTrip!=null){
+                var convertedArriveTime = moment(timeINeedToBeThere, "MM-DD-YYYY hh:mm:ss");
+                var estimatedDriveTime = "";
+                var minutesToLeave = "";
+                var timeToLeave = "";
+
+                var toAddress = upcomingTrip.to;
+                toAddress = $.trim(toAddress);
+                var fromAddress = upcomingTrip.from;
+                fromAddress = $.trim(fromAddress);
+              
+                var key = "QhcHIGXiz9pts1kgG9Xax98JAk1V0UGh";
+                var queryURL = "https://www.mapquestapi.com/directions/v2/route?key="+key+"&to="+toAddress+"&from="+fromAddress;
+
+                var timeFromNowToArrival = "";
+
+                //calling api using the url above
+               $.ajax({
+                  url: queryURL,
+                  method: "GET"
+                }) .done(function(response) {
+                      estimatedDriveTime = response.route.time; //drive time in seconds
+                      timeToLeave = convertedArriveTime.subtract(estimatedDriveTime, "seconds");
+                      var now = moment();
+                      var whenINeedToLeave = timeToLeave.diff(now, 'minutes');
+                      
+                      console.log("whenINeedToLeave "+whenINeedToLeave);
+
+                      if(whenINeedToLeave<0){
+                        var phoneNumberToNotify = upcomingTrip.notifyPhone;
+                        if(phoneNumberToNotify!=null && phoneNumberToNotify!=""){
+                          var notify = confirm("Text "+upcomingTrip.notifyName+ " that you'll be late?");
+                          if(notify){
+                            sendTextMessage(phoneNumberToNotify);
+                          }
+                        }
+                        
+                      } else if(minutesToDeparture<=60){
+                        alert("You have to leave at "+moment(timeToLeave).format("hh:mm") +" to get to your destination on time.");
                       }
-                    }
-                    
-                  } else {
-                    alert("You have to leave at "+moment(timeToLeave).format("hh:mm") +" to get to your destination on time.");
-                  }
-                 
-                });
+                     
+                    });
+              }// close if(upcomingTrip!=null)
        } // close if statement
     }//close if statement
   } //close function checkForAlerts
