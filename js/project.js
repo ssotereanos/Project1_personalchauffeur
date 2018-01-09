@@ -39,7 +39,7 @@ function sendTextMessage(phoneNumberToNotify){
   function getSchedule(today, theSchedule, isWeekDay){
     var filteredSchedule = [];
     for(key in theSchedule){
-      console.log(theSchedule[key]);
+      theSchedule[key].key = key; //keep the key that is in the DB, just in case needed for future iterations
       var theDay = theSchedule[key].day;
       if(theDay == today){
         filteredSchedule.push(theSchedule[key]);
@@ -47,15 +47,24 @@ function sendTextMessage(phoneNumberToNotify){
         filteredSchedule.push(theSchedule[key]);
       }
     }
+    if(filteredSchedule.length>1) {filteredSchedule.sort(compareFunction)};
     return filteredSchedule;
+  }
+
+  function compareFunction(a, b){
+    if(a.hour!=b.hour){
+      return a.hour - b.hour;
+    } else {
+      return a.minute - b.minute;
+    }
   }
 
   function scheduleAlerts(){
     checkForAlerts();
-    setInterval(checkForAlerts, 600000);
+    setInterval(checkForAlerts, 600000); //every 10 minutes
   }
 
-  function checkForAlerts(){
+  function getTodaysSchedule(){
     currentUser = localStorage.getItem("currentUser");
     if(currentUser!=null){
         currentUser = JSON.parse(currentUser);
@@ -70,55 +79,90 @@ function sendTextMessage(phoneNumberToNotify){
         } else {
           todaysSchedule = getSchedule(today, theSchedule, false);
         }
+      }
+      return todaysSchedule;
+  }
 
-        if(todaysSchedule.length > 0 ){ // there is something on the schedule for today!
-            var upcomingTrip = todaysSchedule[0];
-            console.log(upcomingTrip);
-            var timeINeedToBeThere = moment();
-            timeINeedToBeThere.set('hour', upcomingTrip.hour);
-            timeINeedToBeThere.set('minute', upcomingTrip.minute);
-            timeINeedToBeThere.set('second', 00);
-  
-            var convertedArriveTime = moment(timeINeedToBeThere, "MM-DD-YYYY hh:mm:ss");
-            var estimatedDriveTime = "";
-            var minutesToLeave = "";
-            var timeToLeave = "";
+  function getFirstTripNot15MinsLateForAndTimeINeedToBeThere(){
+    var todaysSchedule = getTodaysSchedule();
+    var upcomingTrip = null;
+    var timeINeedToBeThere = null;
+     if(todaysSchedule.length > 0 ){ // there is something on the schedule for today!
+            var minutesToDeparture = 0;
 
-            var toAddress = upcomingTrip.to;
-            toAddress = $.trim(toAddress);
-            var fromAddress = upcomingTrip.from;
-            fromAddress = $.trim(fromAddress);
-          
-            var key = "QhcHIGXiz9pts1kgG9Xax98JAk1V0UGh";
-            var queryURL = "https://www.mapquestapi.com/directions/v2/route?key="+key+"&to="+toAddress+"&from="+fromAddress;
+            for(i=0; i<todaysSchedule.length; i++){
+              upcomingTrip = todaysSchedule[i];
+              timeINeedToBeThere = moment();
+              timeINeedToBeThere.set('hour', upcomingTrip.hour);
+              timeINeedToBeThere.set('minute', upcomingTrip.minute);
+              timeINeedToBeThere.set('second', 00);
 
-            var timeFromNowToArrival = "";
+              minutesToDeparture = timeINeedToBeThere.diff(moment(), 'minutes');
+              upcomingTrip = null; //reset here and do the check below
+              if(minutesToDeparture >= -15){ //find the first trip I'm not more than 15 mins late for
+                upcomingTrip = todaysSchedule[i];
+                break;
+              }
+           }
+      }//close if
 
-            //calling api using the url above
-           $.ajax({
-              url: queryURL,
-              method: "GET"
-            }) .done(function(response) {
-                  estimatedDriveTime = response.route.time; //drive time in seconds
-                  
-                  timeToLeave = convertedArriveTime.subtract(estimatedDriveTime, "seconds");
-                  var now = moment();
-                  var whenINeedToLeave = timeToLeave.diff(now);
-                  if(whenINeedToLeave<0){
-                    var phoneNumberToNotify = upcomingTrip.notifyPhone;
-                    if(phoneNumberToNotify!=null && phoneNumberToNotify!=""){
-                      var notify = confirm("Text "+upcomingTrip.notifyName+ " that you'll be late?");
-                      if(notify){
-                        sendTextMessage(phoneNumberToNotify);
+      var returnValues = [upcomingTrip, timeINeedToBeThere];
+
+      return returnValues;
+  }
+
+  function checkForAlerts(){
+    currentUser = localStorage.getItem("currentUser");
+    if(currentUser!=null){
+            currentUser = JSON.parse(currentUser);
+            var upcomingTripAndTime = getFirstTripNot15MinsLateForAndTimeINeedToBeThere();
+            var upcomingTrip = upcomingTripAndTime[0];
+            var timeINeedToBeThere = upcomingTripAndTime[1];
+            var minutesToDeparture = timeINeedToBeThere.diff(moment(), 'minutes');
+
+            if(upcomingTrip!=null){
+                var convertedArriveTime = moment(timeINeedToBeThere, "MM-DD-YYYY hh:mm:ss");
+                var estimatedDriveTime = "";
+                var minutesToLeave = "";
+                var timeToLeave = "";
+
+                var toAddress = upcomingTrip.to;
+                toAddress = $.trim(toAddress);
+                var fromAddress = upcomingTrip.from;
+                fromAddress = $.trim(fromAddress);
+              
+                var key = "QhcHIGXiz9pts1kgG9Xax98JAk1V0UGh";
+                var queryURL = "https://www.mapquestapi.com/directions/v2/route?key="+key+"&to="+toAddress+"&from="+fromAddress;
+
+                var timeFromNowToArrival = "";
+
+                //calling api using the url above
+               $.ajax({
+                  url: queryURL,
+                  method: "GET"
+                }) .done(function(response) {
+                      estimatedDriveTime = response.route.time; //drive time in seconds
+                      timeToLeave = convertedArriveTime.subtract(estimatedDriveTime, "seconds");
+                      var now = moment();
+                      var whenINeedToLeave = timeToLeave.diff(now, 'minutes');
+                      
+                      console.log("whenINeedToLeave "+whenINeedToLeave);
+
+                      if(whenINeedToLeave<0){
+                        var phoneNumberToNotify = upcomingTrip.notifyPhone;
+                        if(phoneNumberToNotify!=null && phoneNumberToNotify!=""){
+                          var notify = confirm("Text "+upcomingTrip.notifyName+ " that you'll be late?");
+                          if(notify){
+                            sendTextMessage(phoneNumberToNotify);
+                          }
+                        }
+                        
+                      } else if(minutesToDeparture<=60){
+                        alert("You have to leave at "+moment(timeToLeave).format("hh:mm") +" to get to your destination on time.");
                       }
-                    }
-                    
-                  } else {
-                    alert("You have to leave at "+moment(timeToLeave).format("hh:mm") +" to get to your destination on time.");
-                  }
-                 
-                });
-       } // close if statement
+                     
+                    });
+              }// close if(upcomingTrip!=null)
     }//close if statement
   } //close function checkForAlerts
 
@@ -266,6 +310,95 @@ function sendTextMessage(phoneNumberToNotify){
  function getUserName(email){
     return email.replace(/\./g,"");
  }
+
+/* ***********************I NEED A RIDE FUNCTONALITY **************************** */
+ $("#iNeedARide").click(function(event){
+    var upcomingTripAndTime = getFirstTripNot15MinsLateForAndTimeINeedToBeThere();
+    var upcomingTrip = upcomingTripAndTime[0];
+    var timeINeedToBeThere = upcomingTripAndTime[1];
+    var minutesToDeparture = timeINeedToBeThere.diff(moment(), 'minutes');
+    var currentUser = JSON.parse(localStorage.getItem("currentUser"));
+    if(upcomingTrip!=null){
+      var convertedArriveTime = moment(timeINeedToBeThere, "MM-DD-YYYY hh:mm:ss").format("hh:mm A");
+
+      var message = "I need a ride today FROM: "+ upcomingTrip.from+ " TO: "+upcomingTrip.to+". I need to be there close to "+convertedArriveTime;
+      var chatMessage = {name: currentUser.firstName, message:message, timeStamp:firebase.database.ServerValue.TIMESTAMP, rideMessage: true};
+      database.ref("chat").push(chatMessage);
+      alert("Message has been sent. Please check the chat");
+    } else {
+      alert ("No Upcoming Trips To Request a Ride For");
+    }
+  });
+
+
+ /* ***********************CHAT FUNCTIONALITY **************************** */
+
+  function displayChatMessage(messageObject){
+      var chatMessagesString = "";
+      var timeStamp = moment(messageObject.timeStamp).format("hh:mm:ss A");
+      console.log(messageObject.rideMessage);
+      if(messageObject.rideMessage){
+         chatMessagesString += "<span style='color:red; font-weight:bold;'>"+messageObject.name+" ["+timeStamp+"]:  "+messageObject.message;
+         chatMessagesString += "\n</span><br>";
+      } else {
+         chatMessagesString += messageObject.name+" ["+timeStamp+"]:  "+messageObject.message;
+        chatMessagesString += "\n<br>";
+
+      }
+     
+      $("#chatbox").append(chatMessagesString);
+      $("#chatbox").scrollTop($("#chatbox")[0].scrollHeight); //scrolls as messages as added
+
+  }
+
+  database.ref("chat").orderByChild("timeStamp").limitToLast(1).on("child_added", function(snapshot) {
+      displayChatMessage(snapshot.val());
+      if(snapshot.val().rideMessage){
+          alert(snapshot.val().name+" needs a ride today! Please check the chat for details.");
+      }
+  });
+
+ $("#submitChat").click(function(event){
+    var currentUser = JSON.parse(localStorage.getItem("currentUser"));
+    event.preventDefault();
+    var message = $("#input-message").val();
+    if(isNullOrEmpty(message)){
+        alert("Please enter a message");
+    } else {
+        $("#input-message").val(""); // empty out the textbox
+        var chatMessage = {name: currentUser.firstName, message:message, timeStamp:firebase.database.ServerValue.TIMESTAMP, rideMessage:false};
+        database.ref("chat").push(chatMessage);
+    }
+  });
+
+
+  function isNullOrEmpty(input){
+    if(input == null){
+      return true;
+    } 
+
+    if((typeof input) == "string" && input.trim()==""){
+      return true;
+    }
+
+    return false;
+    
+  }
+
+  function displayChatMessages(){
+     firebase.database().ref("chat").once("value").then(
+          function(snapshot) {
+            if(snapshot!=null){
+              console.log(snapshot.val());
+              var messages = snapshot.val();
+              for(key in messages){
+                displayChatMessage(messages[key]);
+              }
+            }
+         });
+  }
+
+
 
 
  $('.datepicker').pickadate({
