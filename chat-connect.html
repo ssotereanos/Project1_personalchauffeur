@@ -15,7 +15,7 @@
   <link href="css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection"/>
   <link href="css/style.css" type="text/css" rel="stylesheet" media="screen,projection"/>
 </head>
-<body>
+<body onLoad="displayChatMessages();">
 
 
 <!--bit of CSS for Info box-->
@@ -70,9 +70,7 @@
 <div class="row">
     <form class="col s12">
       <div class="row">
-        <div class="input-field col s12" style="background-color: white;">
-          <i class="material-icons prefix">mode_edit</i>
-          <textarea id="chatbox" class="materialize-textarea" disabled></textarea>
+        <div class="input-field col s12" id="chatbox" style="background-color: white;">
         </div>
       </div>
     </form>

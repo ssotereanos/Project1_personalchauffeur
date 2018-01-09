@@ -64,7 +64,7 @@ function sendTextMessage(phoneNumberToNotify){
     setInterval(checkForAlerts, 600000); //every 10 minutes
   }
 
-  function checkForAlerts(){
+  function getTodaysSchedule(){
     currentUser = localStorage.getItem("currentUser");
     if(currentUser!=null){
         currentUser = JSON.parse(currentUser);
@@ -79,15 +79,20 @@ function sendTextMessage(phoneNumberToNotify){
         } else {
           todaysSchedule = getSchedule(today, theSchedule, false);
         }
+      }
+      return todaysSchedule;
+  }
 
-        if(todaysSchedule.length > 0 ){ // there is something on the schedule for today!
-            var upcomingTrip = null;
-            var timeINeedToBeThere = "";
+  function getFirstTripNot15MinsLateForAndTimeINeedToBeThere(){
+    var todaysSchedule = getTodaysSchedule();
+    var upcomingTrip = null;
+    var timeINeedToBeThere = null;
+     if(todaysSchedule.length > 0 ){ // there is something on the schedule for today!
             var minutesToDeparture = 0;
 
             for(i=0; i<todaysSchedule.length; i++){
               upcomingTrip = todaysSchedule[i];
-              var timeINeedToBeThere = moment();
+              timeINeedToBeThere = moment();
               timeINeedToBeThere.set('hour', upcomingTrip.hour);
               timeINeedToBeThere.set('minute', upcomingTrip.minute);
               timeINeedToBeThere.set('second', 00);
@@ -98,7 +103,22 @@ function sendTextMessage(phoneNumberToNotify){
                 upcomingTrip = todaysSchedule[i];
                 break;
               }
-            }
+           }
+      }//close if
+
+      var returnValues = [upcomingTrip, timeINeedToBeThere];
+
+      return returnValues;
+  }
+
+  function checkForAlerts(){
+    currentUser = localStorage.getItem("currentUser");
+    if(currentUser!=null){
+            currentUser = JSON.parse(currentUser);
+            var upcomingTripAndTime = getFirstTripNot15MinsLateForAndTimeINeedToBeThere();
+            var upcomingTrip = upcomingTripAndTime[0];
+            var timeINeedToBeThere = upcomingTripAndTime[1];
+            var minutesToDeparture = timeINeedToBeThere.diff(moment(), 'minutes');
 
             if(upcomingTrip!=null){
                 var convertedArriveTime = moment(timeINeedToBeThere, "MM-DD-YYYY hh:mm:ss");
@@ -143,7 +163,6 @@ function sendTextMessage(phoneNumberToNotify){
                      
                     });
               }// close if(upcomingTrip!=null)
-       } // close if statement
     }//close if statement
   } //close function checkForAlerts
 
@@ -292,17 +311,48 @@ function sendTextMessage(phoneNumberToNotify){
     return email.replace(/\./g,"");
  }
 
+/* ***********************I NEED A RIDE FUNCTONALITY **************************** */
+ $("#iNeedARide").click(function(event){
+    var upcomingTripAndTime = getFirstTripNot15MinsLateForAndTimeINeedToBeThere();
+    var upcomingTrip = upcomingTripAndTime[0];
+    var timeINeedToBeThere = upcomingTripAndTime[1];
+    var minutesToDeparture = timeINeedToBeThere.diff(moment(), 'minutes');
+    var currentUser = JSON.parse(localStorage.getItem("currentUser"));
+    if(upcomingTrip!=null){
+      var convertedArriveTime = moment(timeINeedToBeThere, "MM-DD-YYYY hh:mm:ss").format("hh:mm A");
+
+      var message = "I need a ride today FROM: "+ upcomingTrip.from+ " TO: "+upcomingTrip.to+". I need to be there close to "+convertedArriveTime;
+      var chatMessage = {name: currentUser.firstName, message:message, timeStamp:firebase.database.ServerValue.TIMESTAMP, rideMessage: true};
+      database.ref("chat").push(chatMessage);
+      alert("Message has been sent. Please check the chat");
+    } else {
+      alert ("No Upcoming Trips To Request a Ride For");
+    }
+  });
 
 
  /* ***********************CHAT FUNCTIONALITY **************************** */
-   database.ref("chat").orderByChild("timeStamp").limitToLast(1).on("child_added", function(snapshot) {
+
+  function displayChatMessage(messageObject){
       var chatMessagesString = "";
-      var timeStamp = moment(snapshot.val().timeStamp).format("hh:mm:ss");
-      chatMessagesString += snapshot.val().name+" ["+timeStamp+"]:  "+snapshot.val().message;
-      chatMessagesString += "<br>";
+      var timeStamp = moment(messageObject.timeStamp).format("hh:mm:ss A");
+      if(messageObject.rideMessage=="true"){
+         chatMessagesString += "<span style='color:red; font-weight:bold;'>"+messageObject.name+" ["+timeStamp+"]:  "+messageObject.message;
+         chatMessagesString += "\n</span><br>";
+        alert(snapshot.val().name+" needs a ride today! Please check the chat for details.");
+      } else {
+         chatMessagesString += messageObject.name+" ["+timeStamp+"]:  "+messageObject.message;
+        chatMessagesString += "\n<br>";
+
+      }
+     
       $("#chatbox").append(chatMessagesString);
       $("#chatbox").scrollTop($("#chatbox")[0].scrollHeight); //scrolls as messages as added
 
+  }
+
+  database.ref("chat").orderByChild("timeStamp").limitToLast(1).on("child_added", function(snapshot) {
+      displayChatMessage(snapshot.val());
   });
 
  $("#submitChat").click(function(event){
@@ -313,7 +363,7 @@ function sendTextMessage(phoneNumberToNotify){
         alert("Please enter a message");
     } else {
         $("#input-message").val(""); // empty out the textbox
-        var chatMessage = {name: currentUser.firstName, message:message, timeStamp:firebase.database.ServerValue.TIMESTAMP}
+        var chatMessage = {name: currentUser.firstName, message:message, timeStamp:firebase.database.ServerValue.TIMESTAMP, rideMessage:false};
         database.ref("chat").push(chatMessage);
     }
   });
@@ -330,6 +380,19 @@ function sendTextMessage(phoneNumberToNotify){
 
     return false;
     
+  }
+
+  function displayChatMessages(){
+     firebase.database().ref("chat").once("value").then(
+          function(snapshot) {
+            if(snapshot!=null){
+              console.log(snapshot.val());
+              var messages = snapshot.val();
+              for(key in messages){
+                displayChatMessage(messages[key]);
+              }
+            }
+         });
   }
 
 

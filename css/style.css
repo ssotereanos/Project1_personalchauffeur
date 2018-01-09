@@ -122,3 +122,9 @@ footer.page-footer {
   margin: 0;
 }
 
+#chatbox{
+  overflow: auto;
+  height: 400px;
+  text-align: left;
+}
+
