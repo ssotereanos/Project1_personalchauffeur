@@ -15,8 +15,7 @@
   <link href="css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection"/>
   <link href="css/style.css" type="text/css" rel="stylesheet" media="screen,projection"/>
 </head>
-<body onLoad="displayChatMessages();">
-
+<body>
 
 <!--bit of CSS for Info box-->
   <html>
@@ -28,26 +27,23 @@
     background-image: url('round.png')
 
   }
-
-
 </style>
-</head>
-
-
 
 
 <!--Top Navigation-->
 <nav class="red-text text-lighten-5" role="navigation">
     <div class="nav-wrapper container">
       <a id="logo-container" href="home.html" class="brand-logo">The Personal Chauffeur</a>
-
-       <ul class="right hide-on-med-and-down ">
+      <ul class="right hide-on-med-and-down ">
         <li ><a class="login" id = "logOutLinkId" onclick="logout();">Log Out </a></li>
       </ul>
       <ul class="right hide-on-med-and-down">
         <li><a class="about" href="schedule.html">Schedule</a></li>
       </ul>
        <ul class="right hide-on-med-and-down">
+        <li><a class="Home" href="Connet.html">Connect</a></li>
+      </ul>
+      <ul class="right hide-on-med-and-down">
         <li><a class="Home" href="profile.html">My Profile</a></li>
       </ul>
         <ul class="right hide-on-med-and-down">
@@ -59,58 +55,126 @@
       </ul>
   </nav>
 
-  <!--Header-->
-  <div class="red-text text-lighten-2">
-    <div class="icon-block col s12">
-  <h3 class="center teal-text text-lighten-3"><i class="material-icons">people</i></h3>
-  <h2 class=" center teal-text text-lighten-2" style="text-decoration-style: bold; font-size: 90px;">Connect</h2>
-</div>
- 
 
-  <!-- Message Area-->
-<br><br>
-      <!--Text Area-->
-<div class="container">
-<div class="icon-block">
-<div class="row">
+<br><br><br><br>
+<!--Sign-up-->
+
+ <div class="row">
     <form class="col s12">
       <div class="row">
-        <div class="input-field col s12" id="chatbox" style="background-color: white;">
+        <div class="input-field col s6">
+          <i class="orange-text text-lighten-2 material-icons prefix">time_to_leave</i>
+          <input placeholder="John Smith" id="car_name" type="text" class="validate">
+          <label for="car_name">Car Name:</label>
+        </div>
+        <div class="input-field col s6">
+           <i class="orange-text text-lighten-2 material-icons prefix">time_to_leave</i>
+          <input placeholder="i.e. Mazda" id="make_name" type="text" class="validate">
+          <label for="make_name">Make Name:</label>
         </div>
       </div>
-    </form>
-  </div>
-<div class="row">
-    <form class="col s12">
+      <div class="row">
+        <div class="input-field col s6">
+           <i class="orange-text text-lighten-2 material-icons prefix">time_to_leave</i>
+          <input placeholder="i.e. Mazda6" id="Make_name" type="text" class="validate">
+          <label for="model_name">Model Name:</label>
+        </div>
+      </div>
+      
+      </div>
+      <div class="row">
+        <div class="input-field col s6">
+           <i class="orange-text text-lighten-2 material-icons prefix">event</i>
+          <label for="car_year">Year:</label>
+          <br><br><input placeholder="2018" id="car_year" type="year" class="validate">
+        </div>
+      </div>
       <div class="row">
         <div class="input-field col s12">
-          <i class="material-icons prefix">mode_edit</i>
-          <textarea id="input-message" class="materialize-textarea"></textarea>
-          <label for="input-message">Message</label>
+           <i class="orange-text text-lighten-2 material-icons prefix">mail</i>
+          <input placeholder="j.smith@gmail.com" id="email" type="email" class="validate">
+          <label for="email" data-error="wrong" data-success="right">Email</label>
+        </div>
+      </div>
         </div>
       </div>
     </form>
   </div>
-</div>
-  <!--Send Button-->
 
-  <button class="btn waves-effect waves-light" type="submit" name="action" id="submitChat">Submit
-   </form>
-          <form id="image-form" action="#">
-            <input id="mediaCapture" type="file" accept="image/*,capture=camera">
-            
-          </form>
-        </div>
-      </div>
 
-      <div id="must-signin-snackbar" class="mdl-js-snackbar mdl-snackbar">
-        <div class="mdl-snackbar__text"></div>
-        <button class="mdl-snackbar__action" type="button"></button>
-      </div>
 
-    </div>
-  </main>
-</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -129,12 +193,9 @@
         </div>
       </div>
     </div>
-    <div class="parallax"><img src="6.jpg" alt="Unsplashed background img 3"></div>
+
+ <div class="parallax"><img src="6.jpg" alt="Unsplashed background img 3"></div>
   </div>
-
- 
-
-  
 
 
 
@@ -165,7 +226,7 @@
   </footer>
 
 
-<!--  Scripts-->
+ <!--  Scripts-->
   <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
   <script src="js/materialize.js"></script>
   <script src="js/init.js"></script>
