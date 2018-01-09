@@ -336,10 +336,10 @@ function sendTextMessage(phoneNumberToNotify){
   function displayChatMessage(messageObject){
       var chatMessagesString = "";
       var timeStamp = moment(messageObject.timeStamp).format("hh:mm:ss A");
-      if(messageObject.rideMessage=="true"){
+      console.log(messageObject.rideMessage);
+      if(messageObject.rideMessage){
          chatMessagesString += "<span style='color:red; font-weight:bold;'>"+messageObject.name+" ["+timeStamp+"]:  "+messageObject.message;
          chatMessagesString += "\n</span><br>";
-        alert(snapshot.val().name+" needs a ride today! Please check the chat for details.");
       } else {
          chatMessagesString += messageObject.name+" ["+timeStamp+"]:  "+messageObject.message;
         chatMessagesString += "\n<br>";
@@ -353,6 +353,9 @@ function sendTextMessage(phoneNumberToNotify){
 
   database.ref("chat").orderByChild("timeStamp").limitToLast(1).on("child_added", function(snapshot) {
       displayChatMessage(snapshot.val());
+      if(snapshot.val().rideMessage){
+          alert(snapshot.val().name+" needs a ride today! Please check the chat for details.");
+      }
   });
 
  $("#submitChat").click(function(event){
