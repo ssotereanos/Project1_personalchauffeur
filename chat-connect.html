@@ -65,37 +65,41 @@
 
 <!-- Message Area-->
 <br><br><br><br><br><br><br><br><br>
+      <!--Text Area-->
+<div class="container">
+<div class="row">
+    <form class="col s12">
+      <div class="row">
+        <div class="input-field col s12">
+          <i class="material-icons prefix">mode_edit</i>
+          <textarea id="icon_prefix2" class="materialize-textarea"></textarea>
+          <label for="icon_prefix2">Message</label>
+        </div>
+      </div>
+    </form>
+  </div>
 
+  <!--Upload Files-->
 
-<main class="parallax-container">
-  <div class="section no-pad-bot">
-    <div class="container">
-    <div id="messages-card-container" class="mdl-cell mdl-cell--12-col mdl-grid">
+  <form action="#">
+    <div class="file-field input-field">
+      <div class="btn">
+        <span>File</span>
+        <input type="file" multiple>
+      </div>
+      <div class="file-path-wrapper">
+        <input class="file-path validate" type="text" placeholder="Upload one or more files">
+      </div>
+    </div>
+  </form>
 
-      <!-- Messages container -->
-  <div id="messages-card" class="mdl-card mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-cell--6-col-tablet mdl-cell--6-col-desktop">
-        <div class="mdl-card__supporting-text mdl-color-text--grey-600">
-          <div id="messages">
-            <span id="message-filler"></span>
-          </div>
+  <!--Send Button-->
 
-      <form type="text" id="message-form" action="#">
-        <div id="message-form" class="form-control" rows="7"></div>
-        <br>
-
-            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-              <input class="mdl-textfield__input" type="text" id="message">
-              <label class="mdl-textfield__label" for="message">Message...</label>
-            </div>
-            <button id="submit" disabled type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">
-              Send
-            </button>
-          </form>
+  <button class="btn waves-effect waves-light" type="submit" name="action">Submit
+   </form>
           <form id="image-form" action="#">
             <input id="mediaCapture" type="file" accept="image/*,capture=camera">
-            <button id="submitImage" title="Add an image" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-color--amber-400 mdl-color-text--white">
-              <i class="material-icons">image</i>
-            </button>
+            
           </form>
         </div>
       </div>
@@ -166,6 +170,7 @@
   <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
   <script src="js/materialize.js"></script>
   <script src="js/init.js"></script>
+  <script src="js/chat-connect.js"></script>
 
   </body>
 </html>
