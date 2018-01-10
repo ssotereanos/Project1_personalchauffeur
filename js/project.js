@@ -19,7 +19,7 @@
 
 function sendTextMessage(phoneNumberToNotify){
   currentUser = JSON.parse(localStorage.getItem("currentUser"));
-  var queryURL =  "http://app.eztexting.com/sending/messages?format=json";
+  var queryURL =  "https://app.eztexting.com/sending/messages?format=json";
   var message = "This is "+currentUser.firstName+"'s Personal Chauffeur. "+currentUser.firstName+" will be late today.";
   $.ajax({
     url: queryURL,
