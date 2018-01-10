@@ -15,6 +15,7 @@
 //this code is needed by Materialize to instantiate the drop down menu
   $(document).ready(function() {
     $('select').material_select();
+    $('.modal').modal();
   });
 
 function sendTextMessage(phoneNumberToNotify){
@@ -158,13 +159,27 @@ function sendTextMessage(phoneNumberToNotify){
                         }
                         
                       } else if(minutesToDeparture<=60){
-                        alert("You have to leave at "+moment(timeToLeave).format("hh:mm") +" to get to your destination on time.");
+                        var message = "You have to leave at "+moment(timeToLeave).format("hh:mm") +" to get to your destination on time.";
+                        var modal = getModal(message);
+                        modal.modal('open');
+                        
                       }
                      
                     });
               }// close if(upcomingTrip!=null)
     }//close if statement
   } //close function checkForAlerts
+
+ function getModal(message){
+  var $modal = $("<div id='modal1' class='modal'>");
+  $modal.append("<div class='modal-content'>"
+                  +"<p style='text-align:center;'>"+message+"</p>"
+                +"</div></div>");
+   $("body").append($modal);
+   $('.modal').modal();
+   $modal.modal('open');
+  return $modal;
+ }
 
  function login(){
   var email = $("#input-email").val().toLowerCase();
@@ -179,7 +194,8 @@ function sendTextMessage(phoneNumberToNotify){
               window.location.replace("profilepage.html");
               
             } else {
-              alert("Unable to login. Please check your email and password");
+              var modal = getModal("Unable to login. Please check your email and password");
+              modal.modal('open');
             } 
          });
  }
@@ -209,7 +225,8 @@ function sendTextMessage(phoneNumberToNotify){
               localStorage.setItem("currentUser", JSON.stringify(currentUser));
               window.location.replace("profilepage.html");
             } else {
-              alert("That email is already in use");
+              var modal = getModal("That email is already in use");
+              modal.modal('open');
             }
           });
  }
@@ -303,7 +320,10 @@ function sendTextMessage(phoneNumberToNotify){
               currentUser = snapshot.val();
               localStorage.setItem("currentUser", JSON.stringify(currentUser));
          });
-  alert("Your changes have been saved.");
+
+   var modal = getModal("Your changes have been saved.");
+   modal.modal('open');
+
 
  }
 
@@ -325,9 +345,11 @@ function sendTextMessage(phoneNumberToNotify){
       var message = "I need a ride today FROM: "+ upcomingTrip.from+ " TO: "+upcomingTrip.to+". I need to be there close to "+convertedArriveTime;
       var chatMessage = {name: currentUser.firstName, message:message, timeStamp:firebase.database.ServerValue.TIMESTAMP, rideMessage: true};
       database.ref("chat").push(chatMessage);
-      alert("Message has been sent. Please check the chat");
+      var modal = getModal("Message has been sent. Please check the chat");
+      modal.modal('open');
     } else {
-      alert ("No Upcoming Trips To Request a Ride For");
+      var modal = getModal("No Upcoming Trips To Request a Ride For");
+      modal.modal('open');
     }
   });
 
@@ -355,7 +377,8 @@ function sendTextMessage(phoneNumberToNotify){
   database.ref("chat").orderByChild("timeStamp").limitToLast(1).on("child_added", function(snapshot) {
       displayChatMessage(snapshot.val());
       if(snapshot.val().rideMessage){
-          alert(snapshot.val().name+" needs a ride today! Please check the chat for details.");
+          var modal = getModal(snapshot.val().name+" needs a ride today! Please check the chat for details.");
+          modal.modal('open');
       }
   });
 
@@ -364,7 +387,8 @@ function sendTextMessage(phoneNumberToNotify){
     event.preventDefault();
     var message = $("#input-message").val();
     if(isNullOrEmpty(message)){
-        alert("Please enter a message");
+        var modal = getModal("Please enter a message");
+        modal.modal('open');
     } else {
         $("#input-message").val(""); // empty out the textbox
         var chatMessage = {name: currentUser.firstName, message:message, timeStamp:firebase.database.ServerValue.TIMESTAMP, rideMessage:false};
