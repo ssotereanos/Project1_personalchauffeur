@@ -316,9 +316,10 @@ function sendTextMessage(phoneNumberToNotify){
     var upcomingTripAndTime = getFirstTripNot15MinsLateForAndTimeINeedToBeThere();
     var upcomingTrip = upcomingTripAndTime[0];
     var timeINeedToBeThere = upcomingTripAndTime[1];
-    var minutesToDeparture = timeINeedToBeThere.diff(moment(), 'minutes');
-    var currentUser = JSON.parse(localStorage.getItem("currentUser"));
+    
     if(upcomingTrip!=null){
+      var minutesToDeparture = timeINeedToBeThere.diff(moment(), 'minutes');
+      var currentUser = JSON.parse(localStorage.getItem("currentUser"));
       var convertedArriveTime = moment(timeINeedToBeThere, "MM-DD-YYYY hh:mm:ss").format("hh:mm A");
 
       var message = "I need a ride today FROM: "+ upcomingTrip.from+ " TO: "+upcomingTrip.to+". I need to be there close to "+convertedArriveTime;
